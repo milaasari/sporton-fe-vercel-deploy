@@ -31,7 +31,7 @@ const FileUpload = ({onFileSelect}: TFileIploadProps) => {
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => {
                 e.preventDefault();
-                handleFileChange(e.dataTransfer.files?. [0])
+                handleFileChange(e.dataTransfer.files?.[0])
             }}
         className="flex flex-col justify-center items-center w-full py-6 border border-dashed border-primary bg-primary-light"
         >
