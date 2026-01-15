@@ -35,7 +35,7 @@ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaE
               placeholder="Type your Whatsapp number" 
               id="customerContact"
               name="customerContact" 
-              value={formData.customerContact || ""} 
+              value={formData.customerContact ?? ""} 
               onChange={handleInputChange}
             />
         </div>
