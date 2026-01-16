@@ -1,11 +1,15 @@
 export async function fetchAPI<T>( 
     endpoint: string,
-    options?:RequestInit
+    options?: RequestInit
 ): Promise<T> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://be-sporton.agunacourse.com/api";
+  
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  
+  const res = await fetch(`${baseUrl}${cleanEndpoint}`, {
     ...options,
     cache: options?.cache || "no-store", 
-  })
+  });
 
   if(!res.ok){
     let errorMessage = `Failed to fetch data from ${endpoint}`;
