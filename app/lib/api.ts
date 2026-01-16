@@ -27,6 +27,11 @@ export async function fetchAPI<T>(
 }
 
 export function getImageUrl(path: string) {
+    if (!path) return ""; 
     if (path.startsWith("http")) return path;
-    return `${process.env.NEXT_PUBLIC_API_ROOT}/${path}`;
+    const rootUrl = process.env.NEXT_PUBLIC_API_ROOT || "https://be-sporton.agunacourse.com";
+    const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+    const cleanRoot = rootUrl.endsWith('/') ? rootUrl.slice(0, -1) : rootUrl;
+
+    return `${cleanRoot}/${cleanPath}`;
 }
