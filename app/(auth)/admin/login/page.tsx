@@ -5,7 +5,7 @@ import Button from "@/app/(landing)/components/ui/button";
 import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
-    const { push } = useRouter
+    const { push } = useRouter();
     return (
         <main className="bg-[#F7F9FA] w-full min-h-screen flex justify-center items-center mb-9">
             {/* Kontainer Form */}
