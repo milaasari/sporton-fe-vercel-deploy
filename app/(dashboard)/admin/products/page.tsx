@@ -4,14 +4,33 @@ import Button from "@/app/(landing)/components/ui/button";
 import { FiPlus } from "react-icons/fi";
 import ProductTable from "../../components/products/product-table";
 import ProductModal from "../../components/products/product-modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Product } from "@/app/types";
+import { getAllProducts } from "@/app/services/product.service";
 
 const ProductManagement = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [products, setProducts] = useState<Product[]>([])
+
+    const fetchProducts = async () => {
+        try {
+            const data = await getAllProducts();
+            if (data) {
+                setProducts(data)
+            }
+        } catch(error) {
+            console.log("Failed to fetch products", error)
+        }
+    }
+
+    useEffect(() => {
+        fetchProducts();
+    },[]);
 
     const handleCloseModal = () => {
         setIsOpen(false);
-    }
+    };
+
     return (
         <div>
             <div className="flex justify-between items-center mb-10">
@@ -24,7 +43,7 @@ const ProductManagement = () => {
                     Add Product
                 </Button>
             </div>
-            <ProductTable />
+            <ProductTable products={products}/>
             <ProductModal isOpen={isOpen} onClose={handleCloseModal} />
         </div>
     );

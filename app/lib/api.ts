@@ -1,23 +1,19 @@
-export async function fetchAPI<T>( 
-    endpoint: string,
-    options?: RequestInit
+export async function fetchAPI<T>(
+  endpoint: string,
+  options?: RequestInit
 ): Promise<T> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://be-sporton.agunacourse.com/api";
-  
-  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
-  
-  const res = await fetch(`${baseUrl}${cleanEndpoint}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
     ...options,
-    cache: options?.cache || "no-store", 
+    cache: options?.cache || "no-store", // kita set no-store karena ingin mendapatkan data terbaru
   });
 
-  if(!res.ok){
+  if (!res.ok) {
     let errorMessage = `Failed to fetch data from ${endpoint}`;
     try {
-        const errorData = await res.json();
-        errorMessage = errorData.message || errorData.error || errorMessage;
+      const errorData = await res.json();
+      errorMessage = errorData.message || errorData.error || errorMessage;
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
 
     throw new Error(errorMessage);
@@ -27,11 +23,13 @@ export async function fetchAPI<T>(
 }
 
 export function getImageUrl(path: string) {
-    if (!path) return ""; 
-    if (path.startsWith("http")) return path;
-    const rootUrl = process.env.NEXT_PUBLIC_API_ROOT || "https://be-sporton.agunacourse.com";
-    const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-    const cleanRoot = rootUrl.endsWith('/') ? rootUrl.slice(0, -1) : rootUrl;
+  if (path.startsWith("http")) return path; // artinya url nya sudah valid
+  return `${process.env.NEXT_PUBLIC_API_ROOT}${path}`;
+}
 
-    return `${cleanRoot}/${cleanPath}`;
+export function getAuthHeaders() {
+  const token = localStorage.getItem("token");
+  return {
+    Authorization: `Bearer ${token}`
+  }
 }
